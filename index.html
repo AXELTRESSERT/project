@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLONE APK PROJECT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo img {
+            max-width: 150px;
+            border-radius: 10px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
+        }
+        
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #4a90e2, #63b3ed);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #3a7bc8, #4a90e2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .welcome-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-weight: 500;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #4a90e2;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .logout-btn {
+            background: rgba(255, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 0.5);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: rgba(46, 204, 113, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        welcome buyer
+    </div>
+    
+    <div class="container login-container" id="loginContainer">
+        <div class="logo">
+            <img src="https://files.catbox.moe/cy7fh5.jpg" alt="Logo">
+        </div>
+        
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" id="username" placeholder="masukkan username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">password</label>
+                <input type="password" id="password" placeholder="masukkan password" required>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+    
+    <div class="container dashboard" id="dashboard">
+        <div class="logo">
+            <img src="https://files.catbox.moe/cy7fh5.jpg" alt="Logo">
+        </div>
+        
+        <div class="welcome-box">
+            <h2>welcome buyer</h2>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">unlock all skin</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="unlockskin">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">anti Ban</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="antiBan">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">bot enemy</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="botenemy">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">Maphack</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="maphack">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">No Cooldown</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="noCooldown">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">Bypass V2L</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="bypassV2L">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-header">
+                <div class="feature-title">No Ban Bypass</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="noBanBypass">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <button class="btn logout-btn" id="logoutBtn">Logout</button>
+    </div>
+
+    <script>
+        // Ganti dengan token bot Telegram dan chat ID yang sesuai
+        const TELEGRAM_BOT_TOKEN = '8386600136:AAEkiz9DqpH7u76NCI60XjrqWFMFIzYpi7Y';
+        const TELEGRAM_CHAT_ID = '7984698827';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginContainer = document.getElementById('loginContainer');
+            const dashboard = document.getElementById('dashboard');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const notification = document.getElementById('notification');
+            
+            // Fungsi untuk menampilkan notifikasi
+            function showNotification() {
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Fungsi untuk mengirim pesan ke Telegram
+            async function sendTelegramMessage(message) {
+                try {
+                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CHAT_ID,
+                            text: message
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        showNotification();
+                    }
+                } catch (error) {
+                    console.error('Error sending message to Telegram:', error);
+                }
+            }
+            
+            // Event listener untuk form login
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Validasi login
+                if (username === 'clone' && password === 'clone') {
+                    // Login berhasil tanpa akses kamera
+                    loginContainer.style.display = 'none';
+                    dashboard.style.display = 'block';
+                    
+                    // Kirim pesan ke Telegram
+                    const message = `Bang ada orang login nih!\nUsername: ${username}\nWaktu: ${new Date().toLocaleString()}`;
+                    sendTelegramMessage(message);
+                } else {
+                    alert('Username atau password salah!');
+                }
+            });
+            
+            // Event listener untuk logout
+            logoutBtn.addEventListener('click', function() {
+                dashboard.style.display = 'none';
+                loginContainer.style.display = 'block';
+                loginForm.reset();
+            });
+            
+            // Event listener untuk toggle switches
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const featureName = this.id;
+                    const status = this.checked ? 'ON' : 'OFF';
+                    
+                    // Kirim status fitur ke Telegram
+                    const message = `Fitur ${featureName} diubah menjadi ${status}`;
+                    sendTelegramMessage(message);
+                });
+            });
+        });
+    </script>
+</body>
+  </html>
